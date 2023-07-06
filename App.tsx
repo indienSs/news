@@ -1,11 +1,12 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import {Provider} from 'react-redux';
+import {store} from './redux/store';
+import HomeTab from './navigation/HomeTab';
 
 function App(): JSX.Element {
   return (
-    <View>
-      <Text>Hello</Text>
-    </View>
+    <Provider store={store}>
+      <HomeTab />
+    </Provider>
   );
 }
 
