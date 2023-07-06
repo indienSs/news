@@ -29,7 +29,7 @@ export default function HomeTab() {
             tabBarIcon: ({color, size}) => (
               <MaterialCommunityIcons name="user" color={color} size={size} />
             ),
-            title: 'Настройки',
+            title: 'Войти',
           }}
         />
       </Tab.Navigator>
