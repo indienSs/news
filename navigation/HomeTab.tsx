@@ -25,7 +25,7 @@ export default function HomeTab() {
         options={{
           tabBarLabel: 'Войти',
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="user" color={color} size={size} />
+            <MaterialCommunityIcons name="settings" color={'red'} size={size} />
           ),
           title: 'Войти',
         }}
