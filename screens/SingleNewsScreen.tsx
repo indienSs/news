@@ -1,11 +1,11 @@
-import {Text} from 'react-native';
+import {Image, Text} from 'react-native';
 import ScreenLayout from '../layouts/ScreenLayout';
 import {useEffect, useState} from 'react';
 import {api} from '../api';
 import {NewsType} from '../types/NewsType';
 
 export default function SingleNewsScreen({route}: any) {
-  const [singleNews, setSingleNews] = useState<NewsType | unknown>();
+  const [singleNews, setSingleNews] = useState<any>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,9 +25,19 @@ export default function SingleNewsScreen({route}: any) {
     );
   }
 
+  if (!singleNews) {
+    return (
+      <ScreenLayout>
+        <Text>Ошибка получения информации о новости</Text>
+      </ScreenLayout>
+    );
+  }
+
   return (
     <ScreenLayout>
-      <Text>Single news screen</Text>
+      <Image source={singleNews.image_url} />
+      <Text>{singleNews.title}</Text>
+      <Text>{singleNews.short_text}</Text>
     </ScreenLayout>
   );
 }

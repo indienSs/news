@@ -2,8 +2,12 @@ import {Text} from 'react-native';
 import ScreenLayout from '../layouts/ScreenLayout';
 import {useCallback, useEffect, useState} from 'react';
 import {api} from '../api';
+import {useSelector} from 'react-redux';
+import {selectLoggedIn} from '../redux/reducers/appReducer';
 
 export default function NewsScreen({navigation}: any) {
+  const logged = useSelector(selectLoggedIn);
+
   const callbacks = {
     //Переход на экран просмотра информации о новости
     pressHandler: useCallback(() => {
@@ -12,15 +16,10 @@ export default function NewsScreen({navigation}: any) {
   };
 
   useEffect(() => {
-    async function fetchData() {
-      api.get('/news').then(res => {
-        if (res.ok) {
-          //перенести в asyncthunk redux
-        }
-      });
+    if (!logged) {
+      navigation.navigate('LoginScreen');
     }
-    fetchData();
-  }, []);
+  }, [logged]);
 
   return (
     <ScreenLayout>
