@@ -3,13 +3,20 @@ import ScreenLayout from '../layouts/ScreenLayout';
 import {useCallback, useState} from 'react';
 import {api} from '../api';
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation}: any) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const callbacks = {
+    //Отправка формы логина в api
     sendForm: useCallback(
-      () => api.post('/auth/sign_in', {email, password}),
+      () =>
+        api.post('/auth/sign_in', {email, password}).then(res => {
+          if (!res.ok) {
+            navigation.navigate('LoginScreen');
+          }
+          console.log(res.headers);
+        }),
       [],
     ),
   };
@@ -20,7 +27,7 @@ export default function LoginScreen() {
         <TextInput
           value={email}
           onChangeText={setEmail}
-          placeholder="Введите логин"
+          placeholder="Введите имейл"
         />
         <TextInput
           value={password}
@@ -28,7 +35,7 @@ export default function LoginScreen() {
           placeholder="Введите пароль"
           secureTextEntry
         />
-        <Button title="Войти" onPress={callbacks.sendForm} />
+        <Button title="Войти" onPress={callbacks.sendForm} color={'gray'} />
       </SafeAreaView>
     </ScreenLayout>
   );
