@@ -1,29 +1,26 @@
 import {Text} from 'react-native';
 import ScreenLayout from '../layouts/ScreenLayout';
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {api} from '../api';
 
-interface INewsScreen {
-  navigation: any;
-}
-
-export default function NewsScreen({navigation}: INewsScreen) {
-  useEffect(() => {
-    async function fetchData() {
-      api.get('/news').then(res => {
-        if (res.ok) {
-        }
-      });
-    }
-    fetchData();
-  }, []);
-
+export default function NewsScreen({navigation}: any) {
   const callbacks = {
     //Переход на экран просмотра информации о новости
     pressHandler: useCallback(() => {
       navigation.navigate('SingleNewsScreen', {id: 0});
     }, []),
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      api.get('/news').then(res => {
+        if (res.ok) {
+          //перенести в asyncthunk redux
+        }
+      });
+    }
+    fetchData();
+  }, []);
 
   return (
     <ScreenLayout>
