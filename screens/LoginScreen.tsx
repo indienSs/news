@@ -1,24 +1,39 @@
-import {Button, SafeAreaView, Text, TextInput} from 'react-native';
+import {Alert, Button, SafeAreaView, TextInput} from 'react-native';
 import ScreenLayout from '../layouts/ScreenLayout';
-import {useCallback, useState} from 'react';
+import {useState} from 'react';
 import {api} from '../api';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from '../redux/reducers/appReducer';
 
 export default function LoginScreen({navigation}: any) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const dispatch = useDispatch();
 
   const callbacks = {
     //Отправка формы логина в api
-    sendForm: useCallback(
-      () =>
-        api.post('/auth/sign_in', {email, password}).then(res => {
-          if (!res.ok) {
-            navigation.navigate('LoginScreen');
+    sendForm: () =>
+      api.post('/auth/sign_in', {email, password}).then(res => {
+        if (res.ok) {
+          if (res.headers && res.data) {
+            dispatch(
+              setUserInfo({
+                username: res.data.user.username,
+                uid: res.headers.uid,
+                client: res.headers.client,
+                'access-token': res.headers['access-token'],
+              }),
+            );
           }
-          console.log(res.headers);
-        }),
-      [],
-    ),
+        } else {
+          Alert.alert('Неверный логин или пароль', '', [
+            {
+              text: 'OK',
+              onPress: () => setPassword(''),
+            },
+          ]);
+        }
+      }),
   };
 
   return (

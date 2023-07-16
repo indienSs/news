@@ -1,11 +1,19 @@
 import {ReactNode} from 'react';
-import {View} from 'react-native';
+import {Image, Text, TouchableOpacity} from 'react-native';
 import {styles} from './styles';
+import {NewsType} from '../../types/NewsType';
 
-export default function NewsItem() {
+interface INewsItem {
+  newsInfo: NewsType;
+  navigateToSingleNews: () => void;
+}
+
+export default function NewsItem({newsInfo, navigateToSingleNews}: INewsItem) {
   return (
-    <View style={styles.NewsItem}>
-      <Text>One news</Text>
-    </View>
+    <TouchableOpacity style={styles.NewsItem} onPress={navigateToSingleNews}>
+      <Image source={newsInfo.image_url} />
+      <Text>{newsInfo.title}</Text>
+      <Text>{newsInfo.short_text}</Text>
+    </TouchableOpacity>
   );
 }
