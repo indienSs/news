@@ -20,8 +20,11 @@ const initialState: AppStoreType = {
 export const fetchAppInfo = createAsyncThunk(
   'appInfo/fetchAppInfo',
   async () => {
-    const {data} = await api.get<any>('/news');
-    return data;
+    const userInfo = await AsyncStorage.getItem('userInfo');
+    if (!userInfo) {
+      throw new Error();
+    }
+    return JSON.parse(userInfo);
   },
 );
 

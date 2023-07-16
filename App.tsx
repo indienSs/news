@@ -1,18 +1,15 @@
 import {Provider} from 'react-redux';
-import {store} from './redux/store';
+import {store, useAppDispatch} from './redux/store';
 import HomeTab from './navigation/HomeTab';
 import {NavigationContainer} from '@react-navigation/native';
 import {useEffect} from 'react';
-import {api} from './api';
-import {AsyncStorage} from 'react-native';
+import {fetchAppInfo} from './redux/reducers/appReducer';
 
-function App({navigation}: any): JSX.Element {
+function App(): JSX.Element {
+  const appDispatch = useAppDispatch();
+
   useEffect(() => {
-    async function fetchData() {
-      AsyncStorage;
-      api.get('/news').then(res => console.log(res.data));
-    }
-    fetchData();
+    appDispatch(fetchAppInfo());
   }, []);
 
   return (

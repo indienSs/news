@@ -1,4 +1,3 @@
-import {Text} from 'react-native';
 import ScreenLayout from '../layouts/ScreenLayout';
 import {useCallback, useEffect} from 'react';
 import {useSelector} from 'react-redux';
@@ -6,6 +5,7 @@ import {selectLoggedIn} from '../redux/reducers/appReducer';
 import {useAppDispatch} from '../redux/store';
 import {fetchNews, selectNews} from '../redux/reducers/newsReducer';
 import NewsItem from '../components/NewsItem';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function NewsScreen({navigation}: any) {
   const logged = useSelector(selectLoggedIn);

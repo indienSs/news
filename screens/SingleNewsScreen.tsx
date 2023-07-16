@@ -2,7 +2,6 @@ import {Image, Text} from 'react-native';
 import ScreenLayout from '../layouts/ScreenLayout';
 import {useEffect, useState} from 'react';
 import {api} from '../api';
-import {NewsType} from '../types/NewsType';
 
 export default function SingleNewsScreen({route}: any) {
   const [singleNews, setSingleNews] = useState<any>();
@@ -12,8 +11,8 @@ export default function SingleNewsScreen({route}: any) {
     api.get(`/news/${route.params.id}`).then(res => {
       if (res.ok) {
         setSingleNews(res.data);
-        setLoading(false);
       }
+      setLoading(false);
     });
   }, [route.params.id]);
 

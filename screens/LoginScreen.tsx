@@ -4,6 +4,8 @@ import {useState} from 'react';
 import {api} from '../api';
 import {useDispatch} from 'react-redux';
 import {setUserInfo} from '../redux/reducers/appReducer';
+import {UserType} from '../types/UserType';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({navigation}: any) {
   const [email, setEmail] = useState<string>('');
@@ -12,19 +14,18 @@ export default function LoginScreen({navigation}: any) {
 
   const callbacks = {
     //Отправка формы логина в api
-    sendForm: () =>
-      api.post('/auth/sign_in', {email, password}).then(res => {
-        if (res.ok) {
-          if (res.headers && res.data) {
-            dispatch(
-              setUserInfo({
-                username: res.data.user.username,
-                uid: res.headers.uid,
-                client: res.headers.client,
-                'access-token': res.headers['access-token'],
-              }),
-            );
-          }
+    sendForm: async () => {
+      const res = await api.post('/auth/sign_in', {email, password});
+      if (res.ok) {
+        if (res.headers && res.data) {
+          const userInfo: UserType = {
+            username: res.data.user.username,
+            uid: res.headers.uid,
+            client: res.headers.client,
+            'access-token': res.headers['access-token'],
+          };
+          await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+          dispatch(setUserInfo(userInfo));
         } else {
           Alert.alert('Неверный логин или пароль', '', [
             {
@@ -33,7 +34,8 @@ export default function LoginScreen({navigation}: any) {
             },
           ]);
         }
-      }),
+      }
+    },
   };
 
   return (
