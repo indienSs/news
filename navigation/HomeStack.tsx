@@ -8,14 +8,14 @@ export default function HomeStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="CarsListScreen"
+        name="NewsScreen"
         component={NewsScreen}
         options={{title: 'Главная'}}
       />
       <Stack.Screen
-        name="CarScreen"
+        name="SingleNewsScreen"
         component={SingleNewsScreen}
-        options={{title: 'Информация'}}
+        options={{title: 'Информация о новости'}}
       />
     </Stack.Navigator>
   );

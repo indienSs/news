@@ -8,7 +8,7 @@ interface INewsFullInfo {
 
 export default function NewsFullInfo({children}: INewsFullInfo) {
   return (
-    <View style={styles.PageLayout}>
+    <View style={styles.NewsFullInfo}>
       <Text>Single news</Text>
     </View>
   );

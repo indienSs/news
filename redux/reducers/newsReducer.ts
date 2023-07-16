@@ -15,8 +15,8 @@ const initialState: NewsStoreType = {
 };
 
 export const fetchNews = createAsyncThunk('newsInfo/fetchNews', async () => {
-  const {data} = await api.get<NewsType[]>('/news');
-  return data;
+  const {data} = await api.get<any>('/news');
+  return data.news;
 });
 
 export const newsSlice = createSlice({

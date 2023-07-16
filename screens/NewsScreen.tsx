@@ -14,8 +14,8 @@ export default function NewsScreen({navigation}: any) {
 
   const callbacks = {
     //Переход на экран просмотра информации о новости
-    pressHandler: useCallback(() => {
-      navigation.navigate('SingleNewsScreen', {id: 371});
+    pressHandler: useCallback((newsId: number) => {
+      navigation.navigate('SingleNewsScreen', {id: newsId});
     }, []),
   };
 
