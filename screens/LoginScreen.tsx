@@ -3,7 +3,7 @@ import ScreenLayout from '../layouts/ScreenLayout';
 import {useState} from 'react';
 import {api} from '../api';
 import {useDispatch} from 'react-redux';
-import {setUserInfo} from '../redux/reducers/appReducer';
+import {setLoggedIn, setUserInfo} from '../redux/reducers/appReducer';
 import {UserType} from '../types/UserType';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -26,6 +26,7 @@ export default function LoginScreen({navigation}: any) {
           };
           await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
           dispatch(setUserInfo(userInfo));
+          dispatch(setLoggedIn(true));
         } else {
           Alert.alert('Неверный логин или пароль', '', [
             {
