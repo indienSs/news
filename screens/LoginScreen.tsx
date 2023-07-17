@@ -2,22 +2,27 @@ import {Alert, Button, SafeAreaView, TextInput} from 'react-native';
 import ScreenLayout from '../layouts/ScreenLayout';
 import {useState} from 'react';
 import {api} from '../api';
-import {useDispatch} from 'react-redux';
-import {setLoggedIn, setUserInfo} from '../redux/reducers/appReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectLoggedIn,
+  setLoggedIn,
+  setUserInfo,
+} from '../redux/reducers/appReducer';
 import {UserType} from '../types/UserType';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function LoginScreen({navigation}: any) {
+export default function LoginScreen() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const loggedIn = useSelector(selectLoggedIn);
   const dispatch = useDispatch();
 
   const callbacks = {
     //Отправка формы логина в api
-    sendForm: async () => {
-      const res = await api.post('/auth/sign_in', {email, password});
+    login: async () => {
+      const res = await api.post<any>('/auth/sign_in', {email, password});
       if (res.ok) {
-        if (res.headers && res.data) {
+        if (res.headers) {
           const userInfo: UserType = {
             username: res.data.user.username,
             uid: res.headers.uid,
@@ -37,7 +42,23 @@ export default function LoginScreen({navigation}: any) {
         }
       }
     },
+    logout: () => {
+      dispatch(setUserInfo(null));
+      dispatch(setLoggedIn(false));
+    },
   };
+
+  if (loggedIn) {
+    return (
+      <ScreenLayout>
+        <Button
+          title="Выйти из аккаунта"
+          onPress={callbacks.logout}
+          color={'gray'}
+        />
+      </ScreenLayout>
+    );
+  }
 
   return (
     <ScreenLayout>
@@ -53,7 +74,7 @@ export default function LoginScreen({navigation}: any) {
           placeholder="Введите пароль"
           secureTextEntry
         />
-        <Button title="Войти" onPress={callbacks.sendForm} color={'gray'} />
+        <Button title="Войти" onPress={callbacks.login} color={'gray'} />
       </SafeAreaView>
     </ScreenLayout>
   );
