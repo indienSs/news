@@ -45,6 +45,11 @@ export default function LoginScreen() {
     logout: () => {
       dispatch(setUserInfo(null));
       dispatch(setLoggedIn(false));
+      api.setHeaders({
+        uid: '',
+        client: '',
+        'access-token': '',
+      });
     },
   };
 

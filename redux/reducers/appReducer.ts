@@ -24,7 +24,13 @@ export const fetchAppInfo = createAsyncThunk(
     if (!userInfo) {
       throw new Error();
     }
-    return JSON.parse(userInfo);
+    const parsedUserInfo: UserType = JSON.parse(userInfo);
+    api.setHeaders({
+      uid: parsedUserInfo.uid,
+      client: parsedUserInfo.client,
+      'access-token': `Bearer ${parsedUserInfo['access-token']}`,
+    });
+    return parsedUserInfo;
   },
 );
 
